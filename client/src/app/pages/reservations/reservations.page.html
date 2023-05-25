@@ -1,0 +1,39 @@
+<ion-content>
+  <div class="reservation-form">
+    <h2 class="container_title">Reserva tu habitación</h2>
+    <form>
+      <div class="form-group">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" placeholder="Ingrese su nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Correo electrónico:</label>
+        <input type="email" id="email" name="email" placeholder="Ingrese su correo electrónico" required>
+      </div>
+      <div class="form-group">
+        <label for="check-in">Fecha de llegada:</label>
+        <input type="date" id="check-in" name="check-in" required>
+      </div>
+      <div class="form-group">
+        <label for="check-out">Fecha de salida:</label>
+        <input type="date" id="check-out" name="check-out" required>
+      </div>
+      <div class="form-group">
+        <label for="room-type">Tipo de habitación:</label>
+        <select id="room-type" name="room-type" required>
+          <option value="" disabled selected>Seleccione un tipo de habitación</option>
+          <option value="individual">Individual</option>
+          <option value="doble">Doble</option>
+          <option value="suite">Suite</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="comments">Comentarios adicionales:</label>
+        <textarea id="comments" name="comments" placeholder="Ingrese cualquier comentario adicional"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit">Reservar</button>
+      </div>
+    </form>
+  </div>
+</ion-content>

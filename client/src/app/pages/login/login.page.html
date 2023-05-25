@@ -1,0 +1,109 @@
+<ion-content>
+  <div class="contenedor__todo">
+    <div class="caja__trasera">
+      <div class="caja__trasera-login">
+        <h3>¿Ya estás registrado?</h3>
+        <p>Inicia Sesión para entrar en la página</p>
+        <button id="btn__iniciar-sesion">Iniciar Sesión</button>
+      </div>
+      <div class="caja__trasera-register">
+        <h3>¿Aún no te registras?</h3>
+        <p>Regístrate para poder iniciar sesión</p>
+        <button id="btn__registrarse">Registrarme</button>
+      </div>
+    </div>
+
+    <div class="contenedor__login-register">
+      <form (ngSubmit)="register()" [formGroup]="addUsers" class="formulario__login">
+        <h2>Iniciar sesión</h2>
+        <input type="text" placeholder="Correo Electrónico">
+        <input type="password" placeholder="Contraseña">
+        <button>Entrar</button>
+      </form>
+      
+        
+        <form [formGroup]="addUsers">
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <input type="text" name="name" formControlName="nombre" formControlName="name">
+              <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+            </ion-item>
+    
+            <ion-item>
+              <ion-label position="floating">Apellido Paterno</ion-label>
+              <input type="text" name="middle_name" formControlName="apPaterno" formControlName="middle_name">
+              <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+            </ion-item>
+    
+            <ion-item>
+              <ion-label position="floating">Apellido Materno</ion-label>
+              <input type="text" name="last_name" formControlName="apMaterno" formControlName="last_name">
+              <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+            </ion-item>
+    
+            <ion-item>
+              <ion-label position="floating">Fecha de nacimiento</ion-label>
+              <input type="date" name="date">
+              <ion-note>Tipo de dato esperado: fecha</ion-note>
+              <div *ngFor="let error of errors">
+                <ng-container *ngIf="addUsers?.get('date')?.hasError(error.type) && (addUsers?.get('date')?.touched || addUsers?.get('date')?.dirty)">
+                  {{error.message}}
+                </ng-container>
+              </div>
+            </ion-item>
+
+            <ion-item>
+                <ion-label position="floating">Número de celular</ion-label>
+                <input type="number" name="phone_number" formControlName="numTelefono" formControlName="phone_number">
+                <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+                <div *ngFor="let error of errors">
+                  <ng-container *ngIf="addUsers?.get('phone_number')?.hasError(error.type) && (addUsers?.get('phone_number')?.touched || addUsers?.get('phone_number')?.dirty)">
+                    {{ error.message }}
+                  </ng-container>
+                </div>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Correo</ion-label>
+                <input type="text" name="email" formControlName="correo" formControlName="email">
+                <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+                <div *ngFor="let error of errors">
+                  <ng-container *ngIf="addUsers?.get('email')?.hasError(error.type) && (addUsers?.get('email')?.touched || addUsers?.get('email')?.dirty)">
+                    {{ error.message }}
+                  </ng-container>
+                </div>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Contraseña</ion-label>
+                <input type="text" name="email" formControlName="contrasenia" formControlName="email">
+                <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
+                <div *ngFor="let error of errors">
+                  <ng-container *ngIf="addUsers?.get('email')?.hasError(error.type) && (addUsers?.get('email')?.touched || addUsers?.get('email')?.dirty)">
+                    {{ error.message }}
+                  </ng-container>
+                </div>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Tipo de usuario</ion-label>
+                <ion-select>
+                  <ion-select-option *ngFor="let userType of userTypes" [value]="userType.id">{{ userType.nombre }}</ion-select-option>
+                </ion-select>
+                <ion-note>Tipo de dato esperado: numérico</ion-note>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Tipo de usuario</ion-label>
+                <ion-select>
+                  <ion-select-option *ngFor="let userType of userTypes" [value]="userType.id">{{ userType.nombre }}</ion-select-option>
+                </ion-select>
+                <ion-note>Tipo de dato esperado: numérico</ion-note>
+              </ion-item>
+          
+              
+              <ion-button expand="full" color="primary" type="submit" [disabled]="addUsers.invalid">Registrarse</ion-button>
+              </form>
+              </div>
+              </div>
+              </ion-content>                  
