@@ -2,11 +2,6 @@ CREATE DATABASE sgh_VM;
 
 USE sgh_VM;
 
-CREATE TABLE tipo_usuarios(
-	id INT PRIMARY KEY auto_increment,
-	nombre VARCHAR(50) NOT NULL
-
-);
 
 CREATE TABLE usuarios(
 	id INT PRIMARY KEY auto_increment,
@@ -15,13 +10,10 @@ CREATE TABLE usuarios(
 	apMaterno VARCHAR(50) NOT NULL,
 	fech_nacimiento DATE NOT NULL,
 	numTelefono VARCHAR(15) NOT NULL,
-	tipo_usuario_id INT NOT NULL,
 	correo VARCHAR(50) NOT NULL,
 	contrasenia VARCHAR(200) NOT NULL,
-	role_usuario VARCHAR(20) NOT NULL,
+	role_usuario VARCHAR(20) NOT NULL DEFAULT 'cliente'
 
-
-	FOREIGN KEY (tipo_usuario_id) REFERENCES tipo_usuarios(id)
 );
 
 
@@ -34,6 +26,7 @@ CREATE TABLE tipo_habitacion(
 	id Int AUTO_INCREMENT PRIMARY KEY auto_increment,
 	tipo Varchar(50) NOT NULL
 );
+
 
 CREATE TABLE habitacion(
 	id Int auto_increment PRIMARY KEY,
@@ -58,6 +51,7 @@ CREATE TABLE reservas(
 	fecha_inicio DATE NOT NULL,
 	fecha_final DATE NOT NULL,
 	hora_registro Varchar(10),
+	nombre_cliente VARCHAR(70),
 	FOREIGN KEY (habitacion_id) REFERENCES habitacion(id),
 	FOREIGN KEY (persona_id) REFERENCES usuarios(id)
 );
@@ -67,6 +61,17 @@ CREATE TABLE gastos(
 	monto FLOAT NOT NULL,
 	fecha DATE NOT NULL,
 	nombre VARCHAR(15) NOT NULL,
-	empleado VARCHAR(50)
+	empleado_id VARCHAR(50) NOT NULL,
+	nombre_empleado VARCHAR(100) NOT NULL
+);
 
+CREATE TABLE reporte(
+	id INT auto_increment PRIMARY KEY,
+	total_gastos INT NOT NULL,
+	total_reservas INT NOT NULL,
+	total_ingresos_reservas INT NOT NULL,
+	total_usuarios INT NOT NULL,
+	fecha Date NOT NULL,
+	nombre_autor VARCHAR(75) NOT NULL,
+	hora_reporte VARCHAR(40) NOT NULL
 );

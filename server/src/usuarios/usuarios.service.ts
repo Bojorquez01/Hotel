@@ -4,8 +4,6 @@ import { UpdateUsuarioInput } from './dto/update-usuario.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { Repository } from 'typeorm';
-import { TipoUsuario } from '../tipo_usuarios/entities/tipo_usuario.entity';
-import { TipoUsuariosService } from '../tipo_usuarios/tipo_usuarios.service';
 import { Reservacion } from 'src/reservacion/entities/reservacion.entity';
 
 @Injectable()
@@ -15,8 +13,6 @@ export class UsuariosService {
     
     @InjectRepository(Usuario)
     private usuarioRepositorio: Repository<Usuario>,
-
-    private tipoUsuarioServicio: TipoUsuariosService,
 
     @InjectRepository(Reservacion)
     private reservacionRepository: Repository<Reservacion>,
@@ -54,9 +50,11 @@ export class UsuariosService {
   };
 
   //Invoca el servicio del repositorio de tipo de usuario para conseguir sus datos
+ /*
   getTipoUsuario(tipoUsr_id: number): Promise<TipoUsuario>{
     return this.tipoUsuarioServicio.findOne(tipoUsr_id)
   };
+  */
 
   //Fin READ
 

@@ -3,8 +3,6 @@
 # ------------------------------------------------------
 
 input CreateGastoInput {
-  empleadi: String!
-  fecha: DateTime!
   monto: Float!
   nombre: String!
 }
@@ -18,27 +16,25 @@ input CreateHabitacionInput {
   ubicacion: String!
 }
 
-input CreateReporteInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 input CreateReservacionInput {
   fecha_final: DateTime!
   fecha_inicio: DateTime!
 
   """Example field (placeholder)"""
   num_huespedes: Int!
-  persona_id: Int!
+}
+
+input CreateReservacionRecepcionistaInput {
+  fecha_final: DateTime!
+  fecha_inicio: DateTime!
+  nombre_cliente: String!
+
+  """Example field (placeholder)"""
+  num_huespedes: Int!
 }
 
 input CreateTipoHabitacionInput {
-  id: Int!
   tipo: String!
-}
-
-input CreateTipoUsuarioInput {
-  nombre: String!
 }
 
 input CreateUsuarioInput {
@@ -49,8 +45,7 @@ input CreateUsuarioInput {
   fech_nacimiento: String!
   nombre: String!
   numTelefono: String!
-  role_usuario: String!
-  tipo_usuario_id: Int!
+  role_usuario: String! = "cliente"
 }
 
 """
@@ -59,13 +54,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Gasto {
-  empleado: String!
+  empleado_id: Float!
   fecha: DateTime!
 
   """Example field (placeholder)"""
   id: Int!
   monto: Float!
   nombre: String!
+  nombre_empleado: String!
 }
 
 type Habitacion {
@@ -93,16 +89,14 @@ input LoginUserInput {
 }
 
 type Mutation {
-  actualizarTipoUsuario(updateTipoUsuarioInput: UpdateTipoUsuarioInput!): TipoUsuario!
   actualizarUsuario(updateUsuarioInput: UpdateUsuarioInput!): Usuario!
-  borrarTipoUsuario(id: Float!): String!
-  borrarUsuario(id: Float!): String!
-  crearTipoUsuario(tipoUsuarioInput: CreateTipoUsuarioInput!): TipoUsuario!
+  borrarUsuario: String!
   crearUsuario(usuarioInput: CreateUsuarioInput!): Usuario!
   createGasto(createGastoInput: CreateGastoInput!): Gasto!
   createHabitacion(createHabitacionInput: CreateHabitacionInput!): Habitacion!
-  createReporte(createReporteInput: CreateReporteInput!): Reporte!
+  createReporte: Reporte!
   createReservacion(createReservacionInput: CreateReservacionInput!): Reservacion!
+  createReservacionRecepcion(createReservacionRecepcionInput: CreateReservacionRecepcionistaInput!): Reservacion!
   createTipoHabitacion(createTipoHabitacionInput: CreateTipoHabitacionInput!): TipoHabitacion!
   removeGasto(id: Int!): Gasto!
   removeHabitacion(id: Int!): Habitacion!
@@ -128,16 +122,21 @@ type Query {
   reservaciones: [Reservacion!]!
   tipoHabitacion(id: Int!): TipoHabitacion!
   tipoHabitaciones: [TipoHabitacion!]!
-  tipoUsuario(id: Float!): TipoUsuario!
-  tipoUsuarios: [TipoUsuario!]!
-  usuario(correo: String!): Usuario!
+  totalGastos: Float!
+  usuario: Usuario!
+  usuarioCorreo(correo: String!): Usuario!
   usuarios: [Usuario!]!
 }
 
 type Reporte {
-  gasto_id: Int!
+  fecha: DateTime!
+  hora_reporte: String!
   id: Int!
-  reserva_id: Int!
+  nombre_autor: String!
+  total_gastos: Float!
+  total_ingresos_reservas: Float!
+  total_reservas: Int!
+  total_usuarios: Float!
 }
 
 type Reservacion {
@@ -151,6 +150,7 @@ type Reservacion {
   """Example field (placeholder)"""
   id: Int!
   monto: Float!
+  nombre_cliente: String
   num_cuartos: Float!
   num_huespedes: Float!
   periodo: Float!
@@ -164,15 +164,7 @@ type TipoHabitacion {
   tipo: String!
 }
 
-type TipoUsuario {
-  id: Int!
-  nombre: String!
-  usuarios: [Usuario!]
-}
-
 input UpdateGastoInput {
-  empleadi: String
-  fecha: DateTime
   id: Int!
   monto: Float
   nombre: String
@@ -188,8 +180,6 @@ input UpdateHabitacionInput {
 }
 
 input UpdateReporteInput {
-  """Example field (placeholder)"""
-  exampleField: Int
   id: Int!
 }
 
@@ -200,17 +190,11 @@ input UpdateReservacionInput {
 
   """Example field (placeholder)"""
   num_huespedes: Int
-  persona_id: Int
 }
 
 input UpdateTipoHabitacionInput {
   id: Int!
   tipo: String
-}
-
-input UpdateTipoUsuarioInput {
-  id: Int!
-  nombre: String
 }
 
 input UpdateUsuarioInput {
@@ -219,11 +203,9 @@ input UpdateUsuarioInput {
   contrasenia: String
   correo: String
   fech_nacimiento: String
-  id: Int!
   nombre: String
   numTelefono: String
-  role_usuario: String
-  tipo_usuario_id: Int
+  role_usuario: String = "cliente"
 }
 
 type Usuario {
@@ -238,7 +220,4 @@ type Usuario {
   reservacion: [Reservacion!]
   reservaciones: [Reservacion!]!
   role_usuario: String!
-  tipoUsuario: TipoUsuario!
-  tipo_usuario: TipoUsuario @deprecated(reason: "Este campo ha cambiado su valor")
-  tipo_usuario_id: Float!
 }

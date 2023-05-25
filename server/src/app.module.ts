@@ -6,7 +6,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TipoUsuariosModule } from './tipo_usuarios/tipo_usuarios.module';
 import { TipoHabitacionModule } from './tipo_habitacion/tipo_habitacion.module';
 import { HabitacionModule } from './habitacion/habitacion.module';
 import { ReservacionModule } from './reservacion/reservacion.module';
@@ -31,13 +30,12 @@ import { GastosModule } from './gastos/gastos.module';
     host: 'localhost',
     port: 3306,
     username: 'root',
-    password: 'Bojorquez4',
+    password: 'liceedu12',
     autoLoadEntities: true,
     synchronize: false,
     timezone: 'America/Mexico_City',
   }),
   UsuariosModule,
-  TipoUsuariosModule,
   TipoHabitacionModule,
   HabitacionModule,
   ReservacionModule,

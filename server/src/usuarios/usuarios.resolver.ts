@@ -1,14 +1,20 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { UsuariosService } from './usuarios.service';
 import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioInput } from './dto/create-usuario.input';
 import { UpdateUsuarioInput } from './dto/update-usuario.input';
-import { TipoUsuario } from '../tipo_usuarios/entities/tipo_usuario.entity';
 import { Reservacion } from 'src/reservacion/entities/reservacion.entity';
+import { AdminGuard } from 'src/roles/admin.guard';
+import { UseGuards } from '@nestjs/common';
+import { TrabajadorClienteGuard } from 'src/roles/cliente-trabajador';
+import { ClienteGuard } from 'src/roles/cliente.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Resolver(() => Usuario)
 export class UsuariosResolver {
-  constructor(private readonly usuariosServicio: UsuariosService) {}
+  constructor(private readonly usuariosServicio: UsuariosService,
+    private readonly jwtService: JwtService,
+    ) {}
 
   /**
    *Mutation se refiere a aquellas operaciones POST
@@ -27,22 +33,30 @@ export class UsuariosResolver {
    * READ en CRUD
    */
 
+  @UseGuards(AdminGuard)
   @Query((returns)=> [Usuario], {name: 'usuarios'})
   usuarios(){
     return this.usuariosServicio.findAll();
   }
 
+  @UseGuards(TrabajadorClienteGuard)
   @Query((returns)=> Usuario, {name: 'usuario'})
-  usuario(@Args('id') id: number){
-    return this.usuariosServicio.findOne(id);
+  usuario(@Context() context){
+
+    const token = context.req.headers.authorization.replace('Bearer ', '');
+    const payload: any = this.jwtService.decode(token);
+    const usuarioId = payload.id;
+
+    return this.usuariosServicio.findOne(usuarioId);
   }
 
   
-  @Query((returns)=> Usuario, {name: 'usuario'})
+  @Query((returns)=> Usuario, {name: 'usuarioCorreo'})
   usuarioBYCorreo(@Args('correo') correo: string){
     return this.usuariosServicio.findOneByCorreo(correo);
   }
 
+  /*
   @ResolveField((returns)=> TipoUsuario)
   async tipoUsuario(@Parent() usuario: Usuario): Promise<TipoUsuario>{
     const tipoUsuario = await this.usuariosServicio.getTipoUsuario(usuario.tipo_usuario_id);
@@ -61,22 +75,36 @@ export class UsuariosResolver {
       }
     } 
 
+    
 
   }
+  */
   //Fin de READ
 
   //UPDATE en CRUD
   //Args es un decorador que indica a GraphQl que argumentos espera
   //para el servicio
+  @UseGuards(ClienteGuard)
   @Mutation(()=> Usuario, {name: 'actualizarUsuario'})
-  update(@Args('updateUsuarioInput') updateUsuarioInput: UpdateUsuarioInput){
-    return this.usuariosServicio.update(updateUsuarioInput.id, updateUsuarioInput);
+  update(@Args('updateUsuarioInput') updateUsuarioInput: UpdateUsuarioInput, @Context() context){
+    
+    const token = context.req.headers.authorization.replace('Bearer ', '');
+    const payload: any = this.jwtService.decode(token);
+    const usuarioId = payload.id;
+    
+    return this.usuariosServicio.update(usuarioId, updateUsuarioInput);
   }
 
   //DELETE en CRUD
+  @UseGuards(ClienteGuard)
   @Mutation((returns)=> String, {name: 'borrarUsuario'})
-  remove(@Args('id') id: number): Promise<Boolean>{
-    return this.usuariosServicio.remove(id);
+  remove( @Context() context): Promise<Boolean>{
+
+    const token = context.req.headers.authorization.replace('Bearer ', '');
+    const payload: any = this.jwtService.decode(token);
+    const usuarioId = payload.id;
+
+    return this.usuariosServicio.remove(usuarioId);
   }
 
 

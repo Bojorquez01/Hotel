@@ -1,5 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 
 
@@ -21,9 +21,6 @@ export class CreateUsuarioInput {
   @Field()
   numTelefono: string;
 
-  @IsNotEmpty()
-  @Field((type)=> Int)
-  tipo_usuario_id: number;
   
   //Datos de acceso
   @Field()
@@ -32,6 +29,8 @@ export class CreateUsuarioInput {
   @Field()
   contrasenia: string;
 
+  @IsOptional()
   @Field()
-  role_usuario: string;
+  role_usuario: string = 'cliente';
+  
 }

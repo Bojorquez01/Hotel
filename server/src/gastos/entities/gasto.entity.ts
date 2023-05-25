@@ -23,7 +23,11 @@ export class Gasto {
 
   @Column()
   @Field()
-  empleado: string;
+  empleado_id: number;
+
+  @Column()
+  @Field()
+  nombre_empleado: string;
   
-  
+
 }

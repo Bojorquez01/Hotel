@@ -32,20 +32,20 @@ export class LoginPage implements OnInit {
     tipo_usuario_id: 0
   };
   errors = [
-    {type: 'required', message: 'El campo no puede estar vacio'},
-    {type: 'maxlength', message: 'El campo no puede contener tantos caracteres'},
-    {type: 'minlength', message: 'El campo requiere más caracteres'},
-    {type: 'pattern' , message: 'La estructura no es la adecuada para este campo'}
-  ]
+    { type: 'required', message: 'El campo no puede estar vacío' },
+    { type: 'maxlength', message: 'El campo no puede contener tantos caracteres' },
+    { type: 'minlength', message: 'El campo requiere más caracteres' },
+    { type: 'pattern', message: 'La estructura no es la adecuada para este campo' }
+  ];
   public addUsers = new FormGroup({
-    name: new FormControl(this.userData.nombre,[Validators.required]),
-    middle_name: new FormControl(this.userData.apPaterno,[Validators.required]),
-    last_name: new FormControl(this.userData.apMaterno,[Validators.required]),
+    name: new FormControl(this.userData.nombre, [Validators.required]),
+    middle_name: new FormControl(this.userData.apPaterno, [Validators.required]),
+    last_name: new FormControl(this.userData.apMaterno, [Validators.required]),
     phone_number: new FormControl(this.userData.numTelefono, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
-    email: new FormControl(this.userData.correo, [Validators.required, Validators.pattern(/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)]),
-  })
+    email: new FormControl(this.userData.correo, [Validators.required, Validators.pattern(/^([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)])
+  });
 
-  constructor(private restService: RestService, private router: Router) {}
+  constructor(private restService: RestService, private router: Router) { }
 
   ngOnInit() {
     const query = `
@@ -63,49 +63,30 @@ export class LoginPage implements OnInit {
     );
   }
 
-  public addUser() {
-    if (!this.addUsers.controls.name.value ||
-        !this.addUsers.controls.middle_name.value ||
-        !this.addUsers.controls.last_name.value ||
-        !this.addUsers.controls.curp.value ||
-        !this.addUsers.controls.rfc.value ||
-        !this.addUsers.controls.phone_number.value ||
-        !this.addUsers.controls.email.value ||
-        !this.addUsers.controls.user_type_id.value) {
-          Swal.fire({
-            title: 'Error al crear el usuario',
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            width: '100%',
-            padding: '2em',
-            background: '#f6f6f6',
-            position: 'center',
-            heightAuto: false
-          });
-          
+    public addUser() {
+    if (
+      !this.addUsers.controls.name.value ||
+      !this.addUsers.controls.middle_name.value ||
+      !this.addUsers.controls.last_name.value ||
+      !this.addUsers.controls.phone_number.value ||
+      !this.addUsers.controls.email.value
+    ) {
       return;
     }
+
     const mutation = `
       mutation {
         createUser(userInput: {
           name: "${this.addUsers.controls.name.value}",
           middle_name: "${this.addUsers.controls.middle_name.value}",
           last_name: "${this.addUsers.controls.last_name.value}",
-          curp: "${this.addUsers.controls.curp.value}",
-          rfc: "${this.addUsers.controls.rfc.value}",
           phone_number: "${this.addUsers.controls.phone_number.value}",
-          email: "${this.addUsers.controls.email.value}",
-          user_type_id: ${this.addUsers.controls.user_type_id.value}
+          email: "${this.addUsers.controls.email.value}"
         }) {
           id
           name
           middle_name
           last_name
-          curp
-          rfc
-          phone_number
-          email
-          user_type_id
         }
       }
     `;
@@ -119,10 +100,9 @@ export class LoginPage implements OnInit {
         nombre: "",
         numTelefono: "",
         role_usuario: 0,
-        tipo_usuario_id: 0  
+        tipo_usuario_id: 0
       };
       this.router.navigateByUrl('/users');
-    });    
+    });
   }
 }
-

@@ -67,5 +67,9 @@ export class Reservacion {
   @Field()
   hora_registro: string;
 
+  @Column()
+  @Field(()=> String, {nullable: true})
+  nombre_cliente: string;
+
 
 }

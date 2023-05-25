@@ -1,21 +1,28 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context, Float } from '@nestjs/graphql';
 import { GastosService } from './gastos.service';
 import { Gasto } from './entities/gasto.entity';
 import { CreateGastoInput } from './dto/create-gasto.input';
 import { UpdateGastoInput } from './dto/update-gasto.input';
+import { GastosTotalResponse } from './dto/response-gastos';
+import { QueryBuilder, getRepository } from 'typeorm';
 
 @Resolver(() => Gasto)
 export class GastosResolver {
   constructor(private readonly gastosService: GastosService) {}
 
   @Mutation(() => Gasto)
-  createGasto(@Args('createGastoInput') createGastoInput: CreateGastoInput) {
-    return this.gastosService.create(createGastoInput);
+  createGasto(@Args('createGastoInput') createGastoInput: CreateGastoInput,  @Context() context ) {
+    return this.gastosService.create(createGastoInput, context);
   }
 
   @Query(() => [Gasto], { name: 'gastos' })
   findAll() {
     return this.gastosService.findAll();
+  }
+
+  @Query(() => Float, { name: 'totalGastos' })
+  totalGastos() {
+    return this.gastosService.totalGastos();
   }
 
   @Query(() => Gasto, { name: 'gasto' })
@@ -37,4 +44,7 @@ export class GastosResolver {
   removeGasto(@Args('id', { type: () => Int }) id: number) {
     return this.gastosService.remove(id);
   }
+
+  
+  
 }

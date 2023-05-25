@@ -4,22 +4,26 @@ import { Habitacion } from './entities/habitacion.entity';
 import { CreateHabitacionInput } from './dto/create-habitacion.input';
 import { UpdateHabitacionInput } from './dto/update-habitacion.input';
 import { TipoHabitacion } from '../tipo_habitacion/entities/tipo_habitacion.entity';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UseGuards } from '@nestjs/common';
+import { AdminGuard } from 'src/roles/admin.guard';
+import { TrabajadorAdminGuard } from 'src/roles/trabajador-admin.guard';
 
 @Resolver(() => Habitacion)
 export class HabitacionResolver {
   constructor(private readonly habitacionService: HabitacionService) {}
 
+  @UseGuards(AdminGuard)
   @Mutation(() => Habitacion)
   createHabitacion(@Args('createHabitacionInput') createHabitacionInput: CreateHabitacionInput) {
     return this.habitacionService.create(createHabitacionInput);
   }
-
+  @UseGuards(TrabajadorAdminGuard)
   @Query(() => [Habitacion], { name: 'habitaciones' })
   findAll() {
     return this.habitacionService.findAll();
   }
 
+  @UseGuards(TrabajadorAdminGuard)
   @Query(() => Habitacion, { name: 'habitacion' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.habitacionService.findOne(id);
@@ -39,11 +43,14 @@ export class HabitacionResolver {
 
 
   }
+
+  @UseGuards(AdminGuard)
   @Mutation(() => Habitacion)
   updateHabitacion(@Args('updateHabitacionInput') updateHabitacionInput: UpdateHabitacionInput) {
     return this.habitacionService.update(updateHabitacionInput.id, updateHabitacionInput);
   }
 
+  @UseGuards(AdminGuard)
   @Mutation(() => Habitacion)
   removeHabitacion(@Args('id', { type: () => Int }) id: number) {
     return this.habitacionService.remove(id);

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { ReporteService } from './reporte.service';
 import { Reporte } from './entities/reporte.entity';
 import { CreateReporteInput } from './dto/create-reporte.input';
@@ -9,8 +9,8 @@ export class ReporteResolver {
   constructor(private readonly reporteService: ReporteService) {}
 
   @Mutation(() => Reporte)
-  createReporte(@Args('createReporteInput') createReporteInput: CreateReporteInput) {
-    return this.reporteService.create(createReporteInput);
+  createReporte(@Context() context) {
+    return this.reporteService.create(context);
   }
 
   @Query(() => [Reporte], { name: 'reporte' })

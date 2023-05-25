@@ -1,7 +1,8 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 import { Gasto } from 'src/gastos/entities/gasto.entity';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('reporte')
 @ObjectType()
 export class Reporte {
   
@@ -10,11 +11,32 @@ export class Reporte {
   @Field(()=> Int)
   id: number;
 
-  @Field(()=> Int)
-  gasto_id;
+  @Column()
+  @Field(()=> Float)
+  total_gastos: number;
 
+  @Column()
   @Field(()=> Int)
-  reserva_id;
+  total_reservas: number;
+
+  @Column()
+  @Field()
+  total_ingresos_reservas: number;
+
+  @Column()
+  @Field()
+  total_usuarios: number;
+
+  @Column()
+  @Field(()=> Date)
+  fecha: Date;
+
+  @Column()
+  @Field(()=> String)
+  nombre_autor: string;
   
+  @Column()
+  @Field(()=> String)
+  hora_reporte: string;
 
 }
