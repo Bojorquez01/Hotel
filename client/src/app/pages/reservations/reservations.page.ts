@@ -53,17 +53,8 @@ export class ReservationsPage implements OnInit {
         if (response.data && response.data.createReservacion) {
           this.mostrarConsultarReserva = true;
           this.reserva = response.data.createReservacion;
-          console.log("Datos enviados");
-          console.log(this.numHuespedes);
-          console.log(fechaInicioFormatted);
-
-          // Mostrar los datos de la reserva
-          console.log("Datos de la reserva:", this.reserva);
         } else {
           console.log("Error en la respuesta del servidor:", response);
-          console.log(this.numHuespedes);
-          console.log(fechaInicioFormatted);
-          console.log(fechaFinalFormatted);
         }
       },
       (error: any) => {
@@ -73,7 +64,6 @@ export class ReservationsPage implements OnInit {
   }
 
   consultarReserva() {
-    console.log("Consultando reserva:", this.reserva);
-    // Aquí puedes realizar la lógica adicional para mostrar los detalles de la reserva en tu interfaz de usuario
+    console.log("Consultando reserva:");
   }
 }

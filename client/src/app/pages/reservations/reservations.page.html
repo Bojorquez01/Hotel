@@ -16,11 +16,18 @@
       </div>
       <div class="form-group">
         <button type="submit">Reservar</button>
-      </div>
-      <div class="consult-button" *ngIf="mostrarConsultarReserva">
-        <button (click)="consultarReserva()">Consultar Reserva</button>
+        <button type="submit" class="consult" (click)="consultarReserva()">Consultar reserva</button>
       </div>
     </form>
-    <button (click)="consultarReserva()">Consultar Reservación</button>
+
+    <!-- Mostrar los datos de la reserva si está disponible -->
+    <div *ngIf="reserva" class="reserva-details">
+      <h3>Detalles de la reserva:</h3>
+      <p>Precio: {{ reserva.habitacion.precio }}</p>
+      <p>Ubicación: {{ reserva.habitacion.ubicacion }}</p>
+      <p>Nombre del titular:  {{reserva.habitacion.nombre}}</p>
+      <!-- Agrega más campos según sea necesario -->
+    </div>
+
   </div>
 </ion-content>

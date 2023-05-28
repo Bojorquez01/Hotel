@@ -81,7 +81,6 @@ export class LoginPage implements OnInit {
         if (response.data && response.data.login && response.data.login.access_token) {
           const access_token = response.data.login.access_token;
           this.cookieService.set('access_token', access_token);
-          console.log(access_token); // Mostrar el access_token en la consola
           this.router.navigate(['/home']);
         } else {
           console.log("error");
