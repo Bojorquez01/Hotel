@@ -62,6 +62,7 @@ export class JwtInterceptor implements HttpInterceptor {
       } else if (userRole === 'recepcionista') {
         this.isRecepcionista = true;
       }
+      console.log('Rol del usuario:', userRole);
     }
 
     // Resto del código
