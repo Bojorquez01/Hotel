@@ -14,7 +14,6 @@ export class TipoUsuario {
   @Field()
   nombre: string;
 
-  @OneToMany(()=> Usuario, (usuario) => usuario.tipo_usuario)
   @Field(()=> [Usuario], {nullable: true})
   usuarios: Usuario[];
 }

@@ -1,98 +1,49 @@
 <ion-content>
   <div class="contenedor__todo">
-    <div class="caja__trasera">
-      <div class="caja__trasera-login">
-        <h3>¿Ya estás registrado?</h3>
-        <p>Inicia Sesión para entrar en la página</p>
-        <button id="btn__iniciar-sesion">Iniciar Sesión</button>
-      </div>
-      <div class="caja__trasera-register">
-        <h3>¿Aún no te registras?</h3>
-        <p>Regístrate para poder iniciar sesión</p>
-        <button id="btn__registrarse">Registrarme</button>
-      </div>
-    </div>
 
-    <div class="contenedor__login-register">
-      <form (ngSubmit)="addUser()" [formGroup]="addUsers" class="formulario__login">
-        <h2>Iniciar sesión</h2>
-        <input type="text" placeholder="Correo Electrónico">
-        <input type="password" placeholder="Contraseña">
-        <button>Entrar</button>
-      </form>
-      <form [formGroup]="addUsers" class="formulario__registro">
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
-          <input type="text" formControlName="nombre">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Apellido Paterno</ion-label>
-          <input type="text" formControlName="apPaterno">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Apellido Materno</ion-label>
-          <input type="text" formControlName="apMaterno">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Fecha de nacimiento</ion-label>
-          <input type="date" formControlName="fechaNacimiento">
-          <ion-note>Tipo de dato esperado: fecha</ion-note>
-          <div *ngFor="let error of errors">
-            <ng-container *ngIf="addUsers?.get('fechaNacimiento')?.hasError(error.type) && (addUsers?.get('fechaNacimiento')?.touched || addUsers?.get('fechaNacimiento')?.dirty)">
-              {{ error.message }}
-            </ng-container>
-          </div>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Número de celular</ion-label>
-          <input type="number" formControlName="numTelefono">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-          <div *ngFor="let error of errors">
-            <ng-container *ngIf="addUsers?.get('numTelefono')?.hasError(error.type) && (addUsers?.get('numTelefono')?.touched || addUsers?.get('numTelefono')?.dirty)">
-              {{ error.message }}
-            </ng-container>
-          </div>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Correo</ion-label>
-          <input type="text" formControlName="correo">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-          <div *ngFor="let error of errors">
-            <ng-container *ngIf="addUsers?.get('correo')?.hasError(error.type) && (addUsers?.get('correo')?.touched || addUsers?.get('correo')?.dirty)">
-              {{ error.message }}
-            </ng-container>
-          </div>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <input type="password" formControlName="contrasenia">
-          <ion-note>Tipo de dato esperado: cadena de texto</ion-note>
-          <div *ngFor="let error of errors">
-            <ng-container *ngIf="addUsers?.get('contrasenia')?.hasError(error.type) && (addUsers?.get('contrasenia')?.touched || addUsers?.get('contrasenia')?.dirty)">
-              {{ error.message }}
-            </ng-container>
-          </div>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">Tipo de usuario</ion-label>
-          <ion-select formControlName="tipoUsuario">
-            <ion-select-option *ngFor="let userType of userTypes" [value]="userType.id">{{ userType.nombre }}</ion-select-option>
-          </ion-select>
-          <ion-note>Tipo de dato esperado: numérico</ion-note>
-        </ion-item>
-        <ion-button expand="full" color="primary" type="submit" [disabled]="addUsers.invalid">Registrarse</ion-button>
-      </form>
-    </div>
-  </div>
-</ion-content>
-
+    <!--CAJA AZUL DE ATRÁS-->
+                <div class="caja__trasera">
+    
+                    <div class="caja__trasera-login" id="caja__trasera-login">
+                        <h3>¿Ya estas registrado?</h3>
+                        <p>Inicia Sesión para entrar en la página</p>
+                        <button id="btn__iniciar-sesion" (click)="iniciarSesion()">Iniciar Sesión</button>
+                    </div>
+                    <div class="caja__trasera-register" id="caja__trasera-register">
+                        <h3>¿Aún no te registras?</h3>
+                        <p>Regístrate para poder iniciar sesión</p>
+                        <button id="btn__registrarse" (click)="register()">Registrarme</button>
+                    </div>
+    
+                </div>
+    
+    <!--Formulario de login y registro-->
+                <div class="contenedor__login-register" id="contenedor__login-register">
+                    <!--Login-->
+                    <form action="" class="formulario__login" id="formulario__login">
+    
+                        <h2>Iniciar sesión</h2>
+                        <input type="text" placeholder="Correo Electrónico" name="email_access" [(ngModel)]="userData.correo">
+                        <input type="password" placeholder="Contraseña" name="password_access" [(ngModel)]="userData.contrasenia">                        
+                        <button (click)="onLoginClick()">Entrar</button>
+    
+                    </form>
+                    <!--Registro-->
+                    <form action="" class="formulario__register" id="formulario__register">
+    
+                        <h2>Registrarse</h2>
+                        <input type="text" placeholder="Nombre" name="nombre" [(ngModel)]="userData.nombre">
+                        <input type="text" placeholder="Apellido Paterno" name="apPaterno" [(ngModel)]="userData.apPaterno">
+                        <input type="text" placeholder="Apellido Materno" name="apMaterno" [(ngModel)]="userData.apMaterno">
+                        <input type="date" placeholder="Fecha de nacimiento" name="fech_nacimiento" [(ngModel)]="userData.fech_nacimiento">
+                        <input type="text" placeholder="Número de teléfono" name="numTelefono" [(ngModel)]="userData.numTelefono">
+                        <input type="text" placeholder="Correo" name="correo" [(ngModel)]="userData.correo">
+                        <input type="text" placeholder="Contraseña" name="contrasenia" [(ngModel)]="userData.contrasenia">
+                        <button (click)="onRegisterClick()">Registrarme</button>
+    
+                    </form>
+    
+                </div>
+    
+            </div>
+              </ion-content>

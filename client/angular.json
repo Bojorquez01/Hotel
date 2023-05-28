@@ -31,8 +31,8 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
-            "scripts": []
+            "styles": ["src/theme/variables.scss", "src/global.scss", "src/assets/css/estilos.css"],
+            "scripts": ["src/assets/js/login.js"]
           },
           "configurations": {
             "production": {

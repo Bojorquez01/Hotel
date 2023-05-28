@@ -12,8 +12,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'rooms',
-    loadChildren: () => import('./pages/rooms/rooms.module').then( m => m.RoomsPageModule)
+    path: 'contact',
+    loadChildren: () => import('./pages/contact/contact.module').then( m => m.ContactPageModule)
   },
   {
     path: 'login',
@@ -24,8 +24,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/reservations/reservations.module').then( m => m.ReservationsPageModule)
   },
   {
-    path: 'contact',
-    loadChildren: () => import('./pages/contact/contact.module').then( m => m.ContactPageModule)
+    path: 'rooms',
+    loadChildren: () => import('./pages/rooms/rooms.module').then( m => m.RoomsPageModule)
   },
 ];
 
