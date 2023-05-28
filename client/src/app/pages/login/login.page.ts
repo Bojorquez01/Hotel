@@ -11,7 +11,7 @@ import { ConnectionService } from 'src/app/connection.service';
 })
 export class LoginPage implements OnInit {
   contrasenia!: string;
-  correo!: string;  
+  correo!: string;
 
   userTypes: any[] = [];
   userData = {
@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
     numTelefono: "",
     correo: "",
     contrasenia: "",
-    
+
   };
   errors = [
     { type: 'required', message: 'El campo no puede estar vacio' },
@@ -49,6 +49,7 @@ export class LoginPage implements OnInit {
     this.caja_trasera_login = document.getElementById("caja__trasera-login")!;
     this.caja_trasera_register = document.getElementById("caja__trasera-register")!;
   }
+
   iniciarSesion() {
     this.formulario_register.style.display = "none";
     this.contenedor_login_register.style.left = "10px";
@@ -73,12 +74,14 @@ export class LoginPage implements OnInit {
       }) {
         access_token
       }
-    }`;    
+    }`;
+
     this.restService.getAll<any>(query).subscribe(
       (response) => {
         if (response.data && response.data.login && response.data.login.access_token) {
           const access_token = response.data.login.access_token;
           this.cookieService.set('access_token', access_token);
+          console.log(access_token); // Mostrar el access_token en la consola
           this.router.navigate(['/home']);
         } else {
           console.log("error");
@@ -105,7 +108,7 @@ export class LoginPage implements OnInit {
         nombre,
       }
     }`;
-    
+
     this.restService.add(mutation).subscribe(
       (answer: any) => {
         this.userData = {
@@ -117,7 +120,7 @@ export class LoginPage implements OnInit {
           correo: "",
           contrasenia: "",
         };
-  
+
         const form = new FormGroup({
           nombre: new FormControl('', Validators.required),
           apPaterno: new FormControl('', Validators.required),
@@ -130,5 +133,5 @@ export class LoginPage implements OnInit {
         form.reset();
       },
     );
-  }  
+  }
 }

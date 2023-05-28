@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface GraphqlResponse<T> {
@@ -13,31 +13,39 @@ interface GraphqlResponse<T> {
   providedIn: 'root'
 })
 export class ConnectionService {
+  private apiUrl = 'http://localhost:3000/graphql';
+  private headers: HttpHeaders;
 
-  apiUrl = 'http://localhost:3000/graphql';
+  constructor(private http: HttpClient) {
+    this.headers = new HttpHeaders();
+  }
 
-  constructor(private http: HttpClient) { }
+  setAuthorizationToken(token: string) {
+    this.headers = this.headers.set('Authorization', `Bearer ${token}`);
+  }
 
   public getAll<T>(query: string, variables?: any): Observable<GraphqlResponse<T>> {
-    const body = { query: query, variables: variables };
+    const body = { query: query, variables: variables, headers: this.headers };
     return this.http.post<GraphqlResponse<T>>(this.apiUrl, body);
   }
 
   public getById<T>(url: string, params: any): Observable<GraphqlResponse<T>> {
-    return this.http.get<GraphqlResponse<T>>(url, { params });
-}
+    const options = { headers: this.headers, params: params };
+    return this.http.get<GraphqlResponse<T>>(url, options);
+  }
 
   public add(mutation: string): Observable<GraphqlResponse<any>> {
-    return this.http.post<GraphqlResponse<any>>(this.apiUrl, { query: mutation });
+    const body = { query: mutation, headers: this.headers };
+    return this.http.post<GraphqlResponse<any>>(this.apiUrl, body);
   }
 
   public delete<T>(mutation: string, variables: any): Observable<GraphqlResponse<T>> {
-    const body = { query: mutation, variables: variables };
+    const body = { query: mutation, variables: variables, headers: this.headers };
     return this.http.post<GraphqlResponse<T>>(this.apiUrl, body);
   }
 
   public update<T>(mutation: string, variables: any): Observable<GraphqlResponse<T>> {
-    const body = { query: mutation, variables: variables };
+    const body = { query: mutation, variables: variables, headers: this.headers };
     return this.http.post<GraphqlResponse<T>>(this.apiUrl, body);
   }
 }

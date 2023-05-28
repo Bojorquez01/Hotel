@@ -17,7 +17,6 @@ export class HabitacionResolver {
   createHabitacion(@Args('createHabitacionInput') createHabitacionInput: CreateHabitacionInput) {
     return this.habitacionService.create(createHabitacionInput);
   }
-  @UseGuards(TrabajadorAdminGuard)
   @Query(() => [Habitacion], { name: 'habitaciones' })
   findAll() {
     return this.habitacionService.findAll();

@@ -1,25 +1,26 @@
 <ion-content>
   <div class="reservation-form">
     <h2 class="container_title">Reserva tu habitación</h2>
-    <form>
+    <form (ngSubmit)="reserve()">
       <div class="form-group">
-        <label for="name">Número de huespedes:</label>
-        <input type="number" id="huespedes" name="huespedes" placeholder="Ingrese el número de huespedes" required>
+        <label for="huespedes">Número de huéspedes:</label>
+        <input type="number" id="huespedes" name="huespedes" placeholder="Ingrese el número de huéspedes" [(ngModel)]="numHuespedes" required>
       </div>
       <div class="form-group">
         <label for="check-in">Fecha de llegada:</label>
-        <input type="date" id="check-in" name="check-in" required>
+        <input type="date" id="check-in" name="check-in" [(ngModel)]="fechaInicio" required pattern="\d{4}-\d{2}-\d{2}">
       </div>
       <div class="form-group">
         <label for="check-out">Fecha de salida:</label>
-        <input type="date" id="check-out" name="check-out" required>
+        <input type="date" id="check-out" name="check-out" [(ngModel)]="fechaFinal" required pattern="\d{4}-\d{2}-\d{2}">
       </div>
       <div class="form-group">
-        <button type="submit" (click)="reserve()">Reservar</button>
+        <button type="submit">Reservar</button>
       </div>
       <div class="consult-button" *ngIf="mostrarConsultarReserva">
         <button (click)="consultarReserva()">Consultar Reserva</button>
       </div>
     </form>
+    <button (click)="consultarReserva()">Consultar Reservación</button>
   </div>
 </ion-content>
