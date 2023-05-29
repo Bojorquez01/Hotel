@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { ConnectionService } from 'src/app/connection.service';
+import  Swal  from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -81,9 +82,29 @@ export class LoginPage implements OnInit {
         if (response.data && response.data.login && response.data.login.access_token) {
           const access_token = response.data.login.access_token;
           this.cookieService.set('access_token', access_token);
+          Swal.fire({
+            title: 'Bienvenido',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
           this.router.navigate(['/home']);
         } else {
           console.log("error");
+          Swal.fire({
+            title: 'Inicio de sesión incorrecto',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
         }
       },
       (error) => {
@@ -110,6 +131,16 @@ export class LoginPage implements OnInit {
 
     this.restService.add(mutation).subscribe(
       (answer: any) => {
+        Swal.fire({
+            title: 'Usuario creado de forma exitosa',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
         this.userData = {
           nombre: "",
           apPaterno: "",

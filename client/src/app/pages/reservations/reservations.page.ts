@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from 'src/app/connection.service';
+import  Swal  from 'sweetalert2';
 
 @Component({
   selector: 'app-reservations',
@@ -53,8 +54,28 @@ export class ReservationsPage implements OnInit {
         if (response.data && response.data.createReservacion) {
           this.mostrarConsultarReserva = true;
           this.reserva = response.data.createReservacion;
+          Swal.fire({
+            title: 'Reserva creada con exito',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
         } else {
           console.log("Error en la respuesta del servidor:", response);
+          Swal.fire({
+            title: 'La reservación no se pudo concretar',
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
         }
       },
       (error: any) => {
