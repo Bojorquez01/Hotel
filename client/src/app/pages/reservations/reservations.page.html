@@ -19,13 +19,5 @@
       </div>
     </form>
 
-    <!-- Mostrar los datos de la reserva si está disponible -->
-    <div *ngIf="reserva" class="reserva-details">
-      <h3>Detalles de la reserva:</h3>
-      <p>Precio: {{ reserva.habitacion.precio }}</p>
-      <p>Ubicación: {{ reserva.habitacion.ubicacion }}</p>
-      <p>Nombre del titular:  {{reserva.habitacion.nombre}}</p>
-      <!-- Agrega más campos según sea necesario -->
-    </div>
   </div>
 </ion-content>

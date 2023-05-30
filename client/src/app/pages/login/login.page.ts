@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
           console.log("error");
           Swal.fire({
             title: 'Inicio de sesión incorrecto',
-            icon: 'success',
+            icon: 'error',
             confirmButtonText: 'Aceptar',
             width: '100%',
             padding: '2em',

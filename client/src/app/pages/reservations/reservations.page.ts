@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from 'src/app/connection.service';
-import  Swal  from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservations',
@@ -12,14 +12,15 @@ export class ReservationsPage implements OnInit {
   fechaInicio: string;
   fechaFinal: string;
   mostrarConsultarReserva: boolean;
-  reserva: any;
+  monto: number;
+  periodo: number;
+  id: number;
 
   constructor(private restService: ConnectionService) {
     this.numHuespedes = 0;
     this.fechaInicio = '';
     this.fechaFinal = '';
     this.mostrarConsultarReserva = false;
-    this.reserva = null;
   }
 
   ngOnInit() {}
@@ -27,7 +28,7 @@ export class ReservationsPage implements OnInit {
   reserve() {
     const fechaInicioFormatted = new Date(this.fechaInicio).toISOString().split('T')[0];
     const fechaFinalFormatted = new Date(this.fechaFinal).toISOString().split('T')[0];
-  
+
     const mutation = `mutation {
       createReservacion(createReservacionInput:{
         num_huespedes: ${this.numHuespedes},
@@ -37,6 +38,7 @@ export class ReservationsPage implements OnInit {
         id,
         fecha_reserva,
         periodo,
+        monto,
         id,
         habitacion{
           precio
@@ -49,14 +51,25 @@ export class ReservationsPage implements OnInit {
         }
       }
     }`;
+
     this.restService.add(mutation).subscribe(
       (response: any) => {
         if (response.data && response.data.createReservacion) {
+          const reserva = response.data.createReservacion;
           this.mostrarConsultarReserva = true;
-          this.reserva = response.data.createReservacion;
           Swal.fire({
-            title: 'Reserva creada con exito',
+            title: 'Reserva creada con éxito',
             icon: 'success',
+            html: `
+              <h3>Detalles de la reserva:</h3>
+              <p>Número de reservación: ${reserva.id}</p>
+              <p>Nombre del titular: ${reserva.usuario.nombre} ${reserva.usuario.apPaterno} ${reserva.usuario.apMaterno}</p>
+              <p>Precio por noche: ${reserva.habitacion.precio}</p>
+              <p>Ubicación: ${reserva.habitacion.ubicacion}</p>
+              <p>Llegada: ${fechaInicioFormatted}</p>
+              <p>Salida:${fechaFinalFormatted}</p>
+              <p>Total: ${reserva.monto}</p>
+            `,
             confirmButtonText: 'Aceptar',
             width: '100%',
             padding: '2em',
@@ -65,10 +78,10 @@ export class ReservationsPage implements OnInit {
             heightAuto: false
           });
         } else {
-          console.log("Error en la respuesta del servidor:", response);
+          console.log('Error en la respuesta del servidor:', response);
           Swal.fire({
-            title: 'La reservación no se pudo concretar',
-            icon: 'success',
+            title: 'La reservación no se pudo concretar, debido a que no hay habitaciones disponibles',
+            icon: 'error',
             confirmButtonText: 'Aceptar',
             width: '100%',
             padding: '2em',
@@ -79,12 +92,87 @@ export class ReservationsPage implements OnInit {
         }
       },
       (error: any) => {
-        console.log("Error en la solicitud:", error);
+        console.log('Error en la solicitud:', error);
       }
     );
   }
-
-  consultarReserva() {
-    console.log("Consultando reserva:");
-  }
+ /* consultarReserva() {
+    const query = `query {
+      reservaciones {
+        id
+        fecha_inicio
+        fecha_final
+        fecha_reserva
+        monto
+        num_huespedes
+        periodo
+        habitacion {
+          id
+          capacidad
+          estado
+          precio
+          ubicacion
+          tipo_habitacion {
+            id
+            tipo
+          }
+        }
+        usuario {
+          id
+          nombre
+          apPaterno
+          apMaterno
+        }
+      }
+    }`;
+  
+    this.restService.getAll<any>(query).subscribe(
+      (response) => {
+        if (response.data && response.data.reservaciones) {
+          const reservas = response.data.reservaciones;
+          let detallesReservas = '';
+  
+          reservas.forEach((reserva: any) => {
+            detallesReservas += `
+              <h3>Detalles de la reserva:</h3>
+              <p>Nombre del titular: ${reserva.usuario.nombre} ${reserva.usuario.apPaterno} ${reserva.usuario.apMaterno}</p>
+              <p>Precio por noche: ${reserva.habitacion.precio}</p>
+              <p>Ubicación: ${reserva.habitacion.ubicacion}</p>
+              <p>Fecha de llegada: ${reserva.fecha_inicio}</p>
+              <p>Fecha de salida: ${reserva.fecha_final}</p>
+              <p>Total: ${reserva.monto}</p>
+              <hr>
+            `;
+          });
+  
+          Swal.fire({
+            title: 'Consultar Reserva',
+            icon: 'success',
+            html: detallesReservas,
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
+        } else {
+          console.log('Error en la respuesta del servidor:', response);
+          Swal.fire({
+            title: 'Error al consultar las reservas',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            width: '100%',
+            padding: '2em',
+            background: '#f6f6f6',
+            position: 'center',
+            heightAuto: false
+          });
+        }
+      },
+      (error: any) => {
+        console.log('Error en la solicitud:', error);
+      }
+    );
+  }  */
 }
