@@ -71,6 +71,7 @@
 	margin-left: -10px;
   }  
 
+
   .container_title {
 	font-size: 41px;
 	color: #c78c19;
@@ -143,5 +144,12 @@
   }
   
   .places {
-	margin-bottom: 30px;
+	height: 100%;
+  }
+  h2 {
+	width: 100%;
+  }
+
+  ul {
+	list-style-type: none;
   }

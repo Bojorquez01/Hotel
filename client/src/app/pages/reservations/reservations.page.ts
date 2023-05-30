@@ -66,6 +66,7 @@ export class ReservationsPage implements OnInit {
               <p>Nombre del titular: ${reserva.usuario.nombre} ${reserva.usuario.apPaterno} ${reserva.usuario.apMaterno}</p>
               <p>Precio por noche: ${reserva.habitacion.precio}</p>
               <p>Ubicación: ${reserva.habitacion.ubicacion}</p>
+              <p>Número de huéspedes: ${reserva.num_huespedes}</p>
               <p>Llegada: ${fechaInicioFormatted}</p>
               <p>Salida:${fechaFinalFormatted}</p>
               <p>Total: ${reserva.monto}</p>
